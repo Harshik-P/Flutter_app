@@ -13,13 +13,13 @@ class SmallButton extends StatelessWidget {
       width: 60.0,
       decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.blue,
+            color: Colors.indigo[800],
           ),
           borderRadius: BorderRadius.circular(20.0)),
       child: Center(
         child: Text(
           "$btnText",
-          style: TextStyle(color: Colors.blue, fontSize: 16.0),
+          style: TextStyle(color: Colors.indigo[800], fontSize: 16.0),
         ),
       ),
     );

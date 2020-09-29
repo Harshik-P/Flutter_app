@@ -28,8 +28,11 @@ class HomeView extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+                padding: const EdgeInsets.only(top: 25.0, bottom: 40.0),
                 child: Row(children: <Widget>[
+                  SizedBox(
+                    width: 20.0,
+                  ),
                   Text(trip.title, style: new TextStyle(fontSize: 30.0),),
                   Spacer(),
                   Icon(Icons.chat)

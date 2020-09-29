@@ -21,6 +21,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(
+                height: 15.0,
+              ),
               Text(
                 "Profile",
                 style: TextStyle(
@@ -234,16 +237,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30.0,
                           color: Colors.grey,
                         ),
-                        Text("Currency", style: TextStyle(fontSize: 16.0)),
-                        // SizedBox(height: 10.0,),
-                        Divider(
-                          height: 30.0,
-                          color: Colors.grey,
-                        ),
                       ],
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 10.0,
               ),
             ],
           ),

@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.indigo[800],
         title: Text("YOLO"),
       ),
       body: _children[_currentIndex],
@@ -35,22 +36,22 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: new Icon(Icons.home),
               title: new Text("Home"),
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.indigo[800],
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.add),
               title: new Text("Add"),
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.indigo[800],
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.group),
               title: new Text("Groups"),
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.indigo[800],
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.person),
               title: new Text("Profile"),
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.indigo[800],
             ),
           ]
       ),

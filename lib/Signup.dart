@@ -17,6 +17,11 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        appBar: AppBar(
+           title: Text("YOLO"),
+           centerTitle: true,
+          backgroundColor: Colors.indigo[800],
+        ),
         resizeToAvoidBottomPadding: false,
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
             Widget>[
@@ -24,23 +29,13 @@ class _SignupPageState extends State<SignupPage> {
             child: Stack(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
+                  padding: EdgeInsets.fromLTRB(35.0, 80.0, 0.0, 0.0),
                   child: Text(
                     'Signup',
                     style:
-                    TextStyle(fontSize: 80.0, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 65.0, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(260.0, 125.0, 0.0, 0.0),
-                  child: Text(
-                    '.',
-                    style: TextStyle(
-                        fontSize: 80.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green),
-                  ),
-                )
               ],
             ),
           ),
@@ -58,7 +53,7 @@ class _SignupPageState extends State<SignupPage> {
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green))),
+                            borderSide: BorderSide(color: Colors.indigo[800]))),
                       onChanged: (value) {
                         setState(() {
                           _email = value;
@@ -74,7 +69,7 @@ class _SignupPageState extends State<SignupPage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green))),
+                            borderSide: BorderSide(color: Colors.indigo[800]))),
                     obscureText: true,
                       onChanged: (value) {
                         setState(() {
@@ -91,7 +86,7 @@ class _SignupPageState extends State<SignupPage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green))),
+                            borderSide: BorderSide(color: Colors.indigo[800]))),
                     obscureText: true,
                   ),
                   SizedBox(height: 50.0),
@@ -99,8 +94,8 @@ class _SignupPageState extends State<SignupPage> {
                       height: 40.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.greenAccent,
-                        color: Colors.green,
+                        shadowColor: Colors.indigoAccent,
+                        color: Colors.indigo[800],
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
@@ -145,34 +140,12 @@ class _SignupPageState extends State<SignupPage> {
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Montserrat')),
                         ),
-
-
                       ),
                     ),
                   ),
                 ],
               )),
           // SizedBox(height: 15.0),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     Text(
-          //       'New to Spotify?',
-          //       style: TextStyle(
-          //         fontFamily: 'Montserrat',
-          //       ),
-          //     ),
-          //     SizedBox(width: 5.0),
-          //     InkWell(
-          //       child: Text('Register',
-          //           style: TextStyle(
-          //               color: Colors.green,
-          //               fontFamily: 'Montserrat',
-          //               fontWeight: FontWeight.bold,
-          //               decoration: TextDecoration.underline)),
-          //     )
-          //   ],
-          // )
         ]));
   }
 }

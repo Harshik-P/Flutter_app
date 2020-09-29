@@ -52,6 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(
+        title: Text("YOLO"),
+        centerTitle: true,
+        backgroundColor: Colors.indigo[800],
+      ),
       resizeToAvoidBottomPadding: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,23 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Stack(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                  child: Text(
-                    'Hello',
-                    style: TextStyle(
-                        fontSize: 80.0, fontWeight: FontWeight.bold
-                    ),
-                  ),
+                  padding: EdgeInsets.fromLTRB(15.0, 40.0, 0.0, 0.0),
+                    child : Center(
+                        child:Image.asset('assets/signlogo.png',
+                            height: 150,
+                            width: 90
+                        ),
                 ),
-                Container(
-                    padding: EdgeInsets.fromLTRB(16.0, 175.0, 0.0, 0.0),
-                    child: Text(
-                      'There',
-                      style: TextStyle(
-                          fontSize: 80.0, fontWeight: FontWeight.bold
-                      ),
-                    )
-                )
+                ),
               ],
 
             ),
@@ -94,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.grey
                       ),
                       focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
+                          borderSide: BorderSide(color: Colors.indigo[800])
                       )
                   ),
                   onChanged: (value) {
@@ -113,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.grey
                       ),
                       focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
+                          borderSide: BorderSide(color: Colors.indigo[800])
                       )
                   ),
                   obscureText: true,
@@ -130,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: InkWell(
                     child: Text('Forgot Password',
                       style: TextStyle(
-                          color: Colors.green,
+                          color: Colors.indigo[800],
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Montserrat',
                           decoration: TextDecoration.underline
@@ -143,8 +139,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 40.0,
                   child: Material(
                       borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
+                      shadowColor: Colors.indigoAccent,
+                      color: Colors.indigo[800],
                       elevation: 7.0,
                       child: GestureDetector(
                         onTap: () {
@@ -168,29 +164,33 @@ class _MyHomePageState extends State<MyHomePage> {
                       )
                   ),
                 ),
-                SizedBox(height: 20.0,),
+                SizedBox(height: 23.0,),
                 Container(
                   height: 40.0,
-                  child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
-                      elevation: 7.0,
-                      child: GestureDetector(
-                        onTap: () {
-                               _signInWithGoogle();
-                          },
-                        child: Center(
-                          child: Text(
-                            'Sign in with Google',
+                  color: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.black,
+                            style: BorderStyle.solid,
+                            width: 1.0),
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20.0)),
+                    child: InkWell(
+                      onTap: () {
+                        _signInWithGoogle();
+                      },
+                      child:
+
+                      Center(
+                        child: Text('Sign in with Google',
                             style: TextStyle(
-                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Montserrat'
-                            ),
-                          ),
-                        ),
-                      )
+                                fontFamily: 'Montserrat')),
+                      ),
+
+
+                    ),
                   ),
                 ),
                 SizedBox(height: 15.0,),
@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Text('Signup',
                         style: TextStyle(
-                            color: Colors.green,
+                            color: Colors.indigo[800],
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline
