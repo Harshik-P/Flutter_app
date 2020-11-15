@@ -5,14 +5,22 @@ import 'profilepage.dart';
 import 'home_view.dart';
 
 
-class HomePage extends StatefulWidget {
+class HomePagee extends StatefulWidget {
+
+  final String uid;
+
+  HomePagee({Key key, @required this.uid}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
-    return _HomePageState();
+    return _HomePageeState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageeState extends State<HomePagee> {
+
+  bool isSearching = false;
+
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeView(),
@@ -25,8 +33,35 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo[800],
-        title: Text("YOLO"),
+          title: !isSearching ? Text("YOLO"): TextField(
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                icon: Icon(Icons.search,color: Colors.white,),
+                hintText: 'Search Jobs Here',
+                hintStyle: TextStyle(color: Colors.white)
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.indigo[800],
+          actions: <Widget>[
+            isSearching ?
+            IconButton(
+              icon: Icon(Icons.cancel),
+              onPressed: () {
+                setState(() {
+                  this.isSearching = false;
+                });
+              },
+            ):
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  this.isSearching = true;
+                });
+              },
+            )
+          ]
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

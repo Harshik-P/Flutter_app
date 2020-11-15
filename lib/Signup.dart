@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/register.dart';
 import 'package:flutter_app/usermanagement.dart';
 import 'register.dart';
+import 'authentication.dart';
+import 'main.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'homepage.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -11,8 +15,22 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-  String _email;
-  String _password;
+  String email;
+  String password;
+  String confirmpassword;
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  void handleSignup() {
+    signUp(email, password, context).then((value) {
+      if (value != null) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePagee(),
+            ));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +61,7 @@ class _SignupPageState extends State<SignupPage> {
               padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
               child: Column(
                 children: <Widget>[
-                  TextField(
+                  TextFormField(
                     decoration: InputDecoration(
                         labelText: 'EMAIL',
                         labelStyle: TextStyle(
@@ -54,14 +72,21 @@ class _SignupPageState extends State<SignupPage> {
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.indigo[800]))),
+                      validator: (_val) {
+                        if (_val.isEmpty) {
+                          return "Can't be empty";
+                        } else {
+                          return null;
+                        }
+                      },
                       onChanged: (value) {
                         setState(() {
-                          _email = value;
+                          email = value;
                         });
                       }
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
+                  TextFormField(
                     decoration: InputDecoration(
                         labelText: 'PASSWORD ',
                         labelStyle: TextStyle(
@@ -71,14 +96,20 @@ class _SignupPageState extends State<SignupPage> {
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.indigo[800]))),
                     obscureText: true,
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText: "This Field Is Required."),
+                        MinLengthValidator(6,
+                            errorText: "Minimum 6 Characters Required.")
+                      ]),
                       onChanged: (value) {
                         setState(() {
-                          _password = value;
+                          password = value;
                         });
                       }
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
+                  TextFormField(
                     decoration: InputDecoration(
                         labelText: 'CONFIRM PASSWORD ',
                         labelStyle: TextStyle(
@@ -88,6 +119,18 @@ class _SignupPageState extends State<SignupPage> {
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.indigo[800]))),
                     obscureText: true,
+                    validator: (_val) {
+                      if (password != confirmpassword) {
+                        return "Password Did Not Match";
+                      } else {
+                        return null;
+                      }
+                    },
+                      onChanged: (value) {
+                        setState(() {
+                          confirmpassword = value;
+                        });
+                      }
                   ),
                   SizedBox(height: 50.0),
                   Container(
@@ -99,12 +142,12 @@ class _SignupPageState extends State<SignupPage> {
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
-                            FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password).then(( SignedInUser) {
-                              UserManagement().storeNewUser(SignedInUser, context);
-                            }).catchError((e) {
-                              print(e);
-                            });
-                          },
+                            if(password == confirmpassword) {
+                              handleSignup();
+                            } else {
+                                  showErrDialog(context, 'Password not matched');
+                              }
+                            },
                           child: Center(
                             child: Text(
                               'SIGNUP',
@@ -115,7 +158,8 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ),
                         ),
-                      )),
+                        ),
+                      ),
                   SizedBox(height: 20.0),
                   Container(
                     height: 40.0,
@@ -130,7 +174,11 @@ class _SignupPageState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(20.0)),
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).pop();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ));
                         },
                         child:
 

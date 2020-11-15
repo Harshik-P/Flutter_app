@@ -1,11 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:collection';
+import 'services/crud.dart';
+
 
 class RegisterPage extends StatefulWidget {
+
+  final String uid;
+
+  RegisterPage({Key key, @required this.uid}) : super(key: key);
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  DateTime choosedate;
+
+  validateform() {}
+  var _formkey = GlobalKey<_RegisterPageState>();
+
+  String fname;
+  String lname;
+  String addr;
+  String city;
+  String age;
+  String dob;
+  String mob;
+
+  crudMethods crudObj = new crudMethods();
+
+  Map<String, String> empData = Map();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -15,14 +42,18 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.indigo[800],
         ),
         resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
               Widget>[
-            Container(
-                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+            Form(
+              key: _formkey,
+              child: Padding(
+                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
                 child: Column(
                   children: <Widget>[
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       decoration: InputDecoration(
                           labelText: 'FIRST NAME',
                           labelStyle: TextStyle(
@@ -31,9 +62,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            fname = value;
+                          });
+                        }
                     ),
                     SizedBox(height: 10.0),
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       decoration: InputDecoration(
                           labelText: 'LAST NAME ',
                           labelStyle: TextStyle(
@@ -42,9 +79,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            lname = value;
+                          });
+                        }
                     ),
                     SizedBox(height: 10.0),
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           prefixIcon: Icon(Icons.phone),
@@ -55,8 +98,14 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            mob = (value);
+                          });
+                        }
                     ),
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       decoration: InputDecoration(
                           labelText: 'ADDRESS ',
                           labelStyle: TextStyle(
@@ -65,8 +114,14 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            addr = value;
+                          });
+                        }
                     ),
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       decoration: InputDecoration(
                           labelText: 'CITY ',
                           labelStyle: TextStyle(
@@ -75,8 +130,14 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            city = value;
+                          });
+                        }
                     ),
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           labelText: 'AGE',
@@ -86,11 +147,31 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            age = value;
+                          });
+                        }
                     ),
-                    TextField(
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.date_range),
+                          prefixIcon: IconButton(
+                              icon: Icon(Icons.date_range),
+                              onPressed: () {
+                                showDatePicker(
+                                    context: context,
+                                    initialDate: choosedate,
+                                    firstDate: DateTime(DateTime.now().year-50),
+                                    lastDate: DateTime(DateTime.now().year+2)
+                                ).then((date) {
+                                  setState(() {
+                                    choosedate = date;
+                                  });
+                                });
+                              }
+                          ),
                           labelText: 'DATE OF BIRTH ',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
@@ -98,6 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.indigo[800]))),
+
                     ),
                     SizedBox(height: 50.0),
                     Container(
@@ -109,7 +191,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           elevation: 7.0,
                           child: GestureDetector(
                             onTap: () {
+                              if(_formkey.currentState.validateform()){
+
+                              }
                               Navigator.of(context).pushNamed('/homepage');
+                               empData = {'FirstName': this.fname, 'LastName': this.lname, 'Mobile': this.mob, 'Address': this.addr,
+                                 'City': this.city, 'Age': this.age, 'Dob': this.dob};
+                              crudObj.addData(empData).catchError((e) {
+                                print(e);
+                              });
                             },
                             child: Center(
                               child: Text(
@@ -155,7 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 )),
             // SizedBox(height: 15.0),
-          ]),
+            )]),
         ));
   }
 }

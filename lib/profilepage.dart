@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'custom_list_title.dart';
 import 'small_button.dart';
+import 'authentication.dart';
+import 'main.dart';
+import 'register.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -21,9 +23,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: 15.0,
-              ),
               Text(
                 "Profile",
                 style: TextStyle(
@@ -103,33 +102,43 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     children: <Widget>[
-                      CustomListTile(
-                        icon: Icons.settings,
-                        text: "Settings",
+                      ListTile(
+                        leading : Icon(Icons.settings,color: Colors.blue,),
+                        title: Text("Settings",style: TextStyle(fontSize: 16.0),),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        onTap: () {},
                       ),
                       Divider(
                         height: 10.0,
                         color: Colors.grey,
                       ),
-                      CustomListTile(
-                        icon: Icons.history,
-                        text: "History",
+                      ListTile(
+                        leading : Icon(Icons.history,color: Colors.blue,),
+                        title: Text("History",style: TextStyle(fontSize: 16.0),),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        onTap: () {},
                       ),
                       Divider(
                         height: 10.0,
                         color: Colors.grey,
                       ),
-                      CustomListTile(
-                        icon: Icons.help,
-                        text: "Help & Support",
+                      ListTile(
+                        leading : Icon(Icons.help,color: Colors.blue,),
+                        title: Text("Help & Support",style: TextStyle(fontSize: 16.0),),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        onTap: () {},
                       ),
                       Divider(
                         height: 10.0,
                         color: Colors.grey,
                       ),
-                      CustomListTile(
-                        icon: Icons.power_settings_new,
-                        text: "Logout",
+                      ListTile(
+                        leading : Icon(Icons.power_settings_new,color: Colors.blue,),
+                        title: Text("Register",style: TextStyle(fontSize: 16.0),),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        onTap: () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                        },
                       ),
                       Divider(
                         height: 10.0,
@@ -237,14 +246,47 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30.0,
                           color: Colors.grey,
                         ),
+                        Text("Currency", style: TextStyle(fontSize: 16.0)),
+                        // SizedBox(height: 10.0,),
+                        Divider(
+                          height: 30.0,
+                          color: Colors.grey,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
+              SizedBox(height: 20.0,),
+              Container(
+                height: 40.0,
+                child: Material(
+                    borderRadius: BorderRadius.circular(20.0),
+                    shadowColor: Colors.indigoAccent,
+                    color: Colors.indigo,
+                    elevation: 7.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        signOutUser().then((value) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => MyHomePage()),
+                                  (Route<dynamic> route) => false);
+                        });
+                      },
+                      child: Center(
+                        child: Text(
+                          'LOGOUT',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Montserrat'
+                          ),
+                        ),
+                      ),
+                    )
+                ),
               ),
+              SizedBox(height: 15.0,),
             ],
           ),
         ),
