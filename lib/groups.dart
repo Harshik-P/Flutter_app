@@ -15,6 +15,10 @@ class _NotificationPageState extends State<NotificationPage> {
   String doername;
   String givername;
   String jobname;
+  String uid;
+
+  FirebaseUser userData;
+
 
   @override
   Widget build(BuildContext context){
@@ -40,8 +44,11 @@ class _NotificationPageState extends State<NotificationPage> {
 
 
   Stream<QuerySnapshot> getJobsSnapshots(BuildContext context) async* {
+    userData = await FirebaseAuth.instance.currentUser();
+    uid = userData.uid;
 
-    yield* Firestore.instance.collection('notifications').orderBy("count").snapshots();
+    yield* Firestore.instance.collection('notifications').where("userID", isEqualTo: uid).orderBy("Datetym", descending: true).snapshots();
+    print(uid);t
   }
 
 
@@ -50,6 +57,9 @@ class _NotificationPageState extends State<NotificationPage> {
     doername = notification['jobdoerName'];
     givername = notification['jobgivername'];
     jobname = notification['jobname'];
+    Timestamp date = notification['Datetym'];
+    DateTime showDate = date.toDate();
+    showDate.toString();
     print(doername);
 
     return new Container(
@@ -62,6 +72,10 @@ class _NotificationPageState extends State<NotificationPage> {
               ListTile(
                 title: Align(
                   child: new Text("$doername accepted your $jobname",style: TextStyle(fontSize: 23.0),),
+                  alignment: Alignment(-0.8, 0),
+                ),
+                subtitle: Align(
+                  child: new Text("$showDate" ,style: TextStyle(fontSize: 16.0),),
                   alignment: Alignment(-0.8, 0),
                 ),
                 contentPadding: EdgeInsets.symmetric(vertical: 20.0),

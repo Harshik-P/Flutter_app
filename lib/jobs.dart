@@ -321,12 +321,13 @@ class _JobsState extends State<Jobs> {
                          child: GestureDetector(
                            onTap: () {
                              Navigator.pushNamed(context, '/homepage');
+                             DateTime tym = new DateTime.now();
                              giveruid = jobData['uid'];
                              givername = jobData['Full Name'];
                              jobname = jobData['Job'];
-                             Firestore.instance.collection("notifications").document(giveruid).
-                             setData({'jobdoerName': doername, 'jobgiverName': this.givername,
-                               'jobgiverUID': this.giveruid, 'jobname': this.jobname, 'count':FieldValue.increment(1)});
+                             Firestore.instance.collection("notifications").
+                             add({'jobdoerName': doername, 'jobgiverName': this.givername,
+                               'jobgiverUID': this.giveruid, 'jobname': this.jobname, 'userID': this.giveruid, 'Datetym': tym , 'count':FieldValue.increment(1)});
                            },
                           child: Center(
                            child: Text(
