@@ -16,7 +16,7 @@ import 'add.dart';
 import 'groups.dart';
 import 'jobs.dart';
 import 'profilepage.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 
 void main() => runApp(new MyApp());
 
@@ -38,10 +38,11 @@ class MyApp extends StatelessWidget {
         '/profile': (BuildContext context) => new ProfilePage(),
         '/opening': (BuildContext context) => new OpeningPage(),
         '/editprofile': (BuildContext context) => new EditProfilePage(),
-        '/jobs': (BuildContext context) => new Jobs()
+        '/jobs': (BuildContext context) => new Jobs(),
+        '/groups': (BuildContext context) => new NotificationPage()
       },
 
-      home: new OpeningPage(),
+      home: new MyHomePage(),
     );
   }
 }
@@ -97,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(15.0, 40.0, 0.0, 0.0),
                       child : Center(
-                          child:Image.asset('assets/signlogo.png',
+                          child:Image.asset('assets/logosignin.png',
                               height: 150,
                               width: 90
                           ),
@@ -218,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
                             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => HomePagee(uid: user.uid)));
+                                builder: (context) => RegisterPage(uid: user.uid)));
                           });
                         },
                         child:

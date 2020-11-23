@@ -7,13 +7,48 @@ import 'package:flutter_app/authentication.dart';
 import 'package:flutter_app/groups.dart';
 import 'package:flutter_app/homepage.dart';
 import 'package:flutter_app/main.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
-class Jobs extends StatelessWidget {
+class Jobs extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _JobsState();
+  }
+}
+
+class _JobsState extends State<Jobs> {
+
+  FirebaseUser User;
+  String docid;
+  String doeruid;
+  String doername;
+  String giveruid;
+  String givername;
+  String jobname;
+
+  FirebaseUser userData;
+  Future<void> onPressed() async {
+    userData = await FirebaseAuth.instance.currentUser();
+    final uid = userData.uid;
+    DocumentSnapshot variable = await Firestore.instance.collection('userData').document(uid).get();
+    setState(() {
+      doername = variable.data['FirstName'];
+    });
+    print(doername);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    onPressed();
+  }
 
   final database = Firestore.instance;
 
   String docID;
+  String emp_uid;
 
   Map jobData = {};
 
@@ -22,6 +57,7 @@ class Jobs extends StatelessWidget {
 
     jobData = ModalRoute.of(context).settings.arguments;
     print(jobData);
+    print(doername);
        return  Scaffold(
          backgroundColor: Colors.grey[200],
          appBar: AppBar(
@@ -282,7 +318,17 @@ class Jobs extends StatelessWidget {
                              Radius.circular(10),
                            ),
                          ),
-                         child: Center(
+                         child: GestureDetector(
+                           onTap: () {
+                             Navigator.pushNamed(context, '/homepage');
+                             giveruid = jobData['uid'];
+                             givername = jobData['Full Name'];
+                             jobname = jobData['Job'];
+                             Firestore.instance.collection("notifications").document(giveruid).
+                             setData({'jobdoerName': doername, 'jobgiverName': this.givername,
+                               'jobgiverUID': this.giveruid, 'jobname': this.jobname, 'count':FieldValue.increment(1)});
+                           },
+                          child: Center(
                            child: Text(
                              "Apply Now",
                              style: TextStyle(
@@ -292,6 +338,7 @@ class Jobs extends StatelessWidget {
                              ),
                            ),
                          ),
+                       ),
                        ),
                      ),
 

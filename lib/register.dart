@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:collection';
 import 'services/crud.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'homepage.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -28,6 +29,20 @@ class _RegisterPageState extends State<RegisterPage> {
   String age;
   String dob;
   String mob;
+  String uid;
+
+  Future<void> getCurrentUid() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      uid = user.uid;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUid();
+  }
 
   crudMethods crudObj = new crudMethods();
 
@@ -191,15 +206,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           elevation: 7.0,
                           child: GestureDetector(
                             onTap: () {
-                              if(_formkey.currentState.validateform()){
-
-                              }
                               Navigator.of(context).pushNamed('/homepage');
-                               empData = {'FirstName': this.fname, 'LastName': this.lname, 'Mobile': this.mob, 'Address': this.addr,
-                                 'City': this.city, 'Age': this.age, 'Dob': this.dob};
-                              crudObj.addData(empData).catchError((e) {
-                                print(e);
-                              });
+                              Firestore.instance.collection("userData").document(uid).
+                               setData({'FirstName': this.fname, 'LastName': this.lname, 'Mobile': this.mob, 'Address': this.addr,
+                                 'City': this.city, 'Age': this.age, 'Dob': this.dob});
+                              Firestore.instance.collection("Images").document(uid).
+                              setData({'thumbnailUrl': "https://images.unsplash.com/photo-1502164980785-f8aa41d53611?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",});
                             },
                             child: Center(
                               child: Text(
@@ -227,7 +239,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(20.0)),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).pop();
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePagee()));
                           },
                           child:
 

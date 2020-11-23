@@ -13,7 +13,7 @@ class SmallButton extends StatelessWidget {
         width: 60.0,
         decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.blue,
+              color: Colors.indigo[800],
             ),
             borderRadius: BorderRadius.circular(20.0)),
         child:GestureDetector(

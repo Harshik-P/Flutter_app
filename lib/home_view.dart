@@ -26,62 +26,64 @@ class _HomeViewState extends State<HomeView> {
   TextEditingController textEditingController = TextEditingController();
   String searchString;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-          children: <Widget>[
-        Expanded(
-         child: Column(
-           children: <Widget>[
-           Padding(
-            padding: const EdgeInsets.all(15),
-             child: Container(
-              child: TextField(
-                onChanged: (val){
-                   setState(() {
-                    searchString = val.toLowerCase();
-                    isSearching = true;
-                });
-               },
-                controller: textEditingController,
-                decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    textEditingController.clear();
-                    isSearching = false;
-                  },
-              ),
-              hintText: 'Search Jobs here',
-              hintStyle: TextStyle(
-                  fontFamily: 'Antra', color: Colors.blueGrey
-              )
-          ),
-        ),
-      ),
-    ),
-            Expanded(
-              child: StreamBuilder(
-                stream: (searchString == null || searchString.trim() == '')
-                    ? getJobsSnapshots(context)
-                    : getSearchSnapshots(context),
-                    builder: (context, snapshot) {
-                    if(!snapshot.hasData) return const Text("Loading....");
-                    return new ListView.builder(
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                        JobCard(context, snapshot.data.documents[index]));
-        }
-      ),
-           )]
-    ))]));
+        body: Column(
+            children: <Widget>[
+              Expanded(
+                  child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Container(
+                            child: TextField(
+                              onChanged: (val){
+                                setState(() {
+                                  searchString = val.toLowerCase();
+                                  isSearching = true;
+                                });
+                              },
+                              controller: textEditingController,
+                              decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.clear),
+                                    onPressed: () {
+                                      textEditingController.clear();
+                                      isSearching = false;
+                                    },
+                                  ),
+                                  hintText: 'Search Jobs here',
+                                  hintStyle: TextStyle(
+                                      fontFamily: 'Antra', color: Colors.blueGrey
+                                  )
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: StreamBuilder(
+                              stream: (searchString == null || searchString.trim() == '')
+                                  ? getJobsSnapshots(context)
+                                  : getSearchSnapshots(context),
+                              builder: (context, snapshot) {
+                                if(!snapshot.hasData) return const Text("Loading....");
+                                return new ListView.builder(
+                                    itemCount: snapshot.data.documents.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return JobCard(context, snapshot.data.documents[index]);
+                                    });
+                              }
+                          ),
+                        )]
+                  ))]));
   }
 
 
   Stream<QuerySnapshot> getJobsSnapshots(BuildContext context) async* {
 
-     yield* Firestore.instance.collection('Jobs').snapshots();
+    yield* Firestore.instance.collection('Jobs').snapshots();
   }
 
   Stream<QuerySnapshot> getSearchSnapshots(BuildContext context) async* {
@@ -92,35 +94,45 @@ class _HomeViewState extends State<HomeView> {
   void sendData(DocumentSnapshot job) {
     Navigator.pushReplacementNamed(context, '/jobs', arguments: {
       'Full Name': job['Full Name'], 'Job': job['Job'], 'Job Description': job['Job Description'], 'Mobile': job['Mobile'], 'Address': job['Address'],
-      'Requirements': job['Requirements']
+      'Requirements': job['Requirements'], 'uid': job['uid'], 'docid': job['docid']
     }
     );
   }
 
 
   Widget JobCard(BuildContext context, DocumentSnapshot job) {
+
     return new Container(
-      child: Card(
+      child:  Card(
+        elevation: 3.0,
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 25.0, bottom: 40.0),
-                child: GestureDetector(
-                   onTap: () {
-                     sendData(job);
-                  },
-                 child: Row(children: <Widget>[
-                  SizedBox(
-                    width: 20.0,
-                  ),
-                  Text(job['Job'], style: new TextStyle(fontSize: 30.0),),
-                  Spacer(),
-                  Icon(Icons.chat)
-                      ],
+              ListTile(
+                leading : CircleAvatar(backgroundImage: NetworkImage(job['imageURL'])),
+                title: Align(
+                   child: new Text(job['Job'],style: TextStyle(fontSize: 23.0),),
+                    alignment: Alignment(-0.8, 0),
                     ),
-                  )
-              )]),
+                subtitle: Align(
+                  child: new Text(job['City'] ,style: TextStyle(fontSize: 16.0),),
+                  alignment: Alignment(-0.8, 0),
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 20.0),
+                dense: true,
+                onTap: () {
+                  sendData(job);
+                },
               ),
-          );
+              Divider(
+                height: 10.0,
+                color: Colors.grey,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

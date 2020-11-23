@@ -25,7 +25,7 @@ class _HomePageeState extends State<HomePagee> {
   final List<Widget> _children = [
     HomeView(),
     AddPage(),
-    GroupPage(),
+    NotificationPage(),
     ProfilePage(),
   ];
 
@@ -33,35 +33,9 @@ class _HomePageeState extends State<HomePagee> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: !isSearching ? Text("YOLO"): TextField(
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                icon: Icon(Icons.search,color: Colors.white,),
-                hintText: 'Search Jobs Here',
-                hintStyle: TextStyle(color: Colors.white)
-            ),
-          ),
+          title: Text("YOLO"),
           centerTitle: true,
           backgroundColor: Colors.indigo[800],
-          actions: <Widget>[
-            isSearching ?
-            IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: () {
-                setState(() {
-                  this.isSearching = false;
-                });
-              },
-            ):
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                setState(() {
-                  this.isSearching = true;
-                });
-              },
-            )
-          ]
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -80,7 +54,7 @@ class _HomePageeState extends State<HomePagee> {
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.group),
-              title: new Text("Groups"),
+              title: new Text("Notifications"),
               backgroundColor: Colors.indigo[800],
             ),
             BottomNavigationBarItem(

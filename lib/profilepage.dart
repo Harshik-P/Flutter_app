@@ -3,6 +3,11 @@ import 'small_button.dart';
 import 'authentication.dart';
 import 'main.dart';
 import 'register.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'services/mobile_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -12,6 +17,37 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool turnOnNotification = false;
   bool turnOnLocation = false;
+  String uid;
+  String FullName;
+  String Firstname;
+  String Lastname;
+  String mobnum;
+  String imageURL ="https://images.unsplash.com/photo-1502164980785-f8aa41d53611?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60";
+
+  FirebaseUser userData;
+  Future<void> getDetails() async {
+    userData = await FirebaseAuth.instance.currentUser();
+    final uid = userData.uid;
+
+    DocumentSnapshot details = await Firestore.instance.collection('userData').document(uid).get();
+    setState(() {
+      Firstname = details.data['FirstName'];
+      Lastname = details.data['LastName'];
+      mobnum = details.data['Mobile'];
+    });
+
+    DocumentSnapshot image = await Firestore.instance.collection('Images').document(uid).get();
+    setState(() {
+      imageURL = image.data['thumbnailUrl'];
+    });
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +85,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.black38),
                       ],
                       image: DecorationImage(
-                        image: AssetImage(
-                          "assets/mahesh.jpg",
+                        image: NetworkImage(
+                          imageURL,
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -63,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Mahesh Babu",
+                        Firstname??'Hello',
                         style: TextStyle(
                           fontSize: 16.0,
                         ),
@@ -72,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 10.0,
                       ),
                       Text(
-                        "+233247656959",
+                        mobnum??'009090',
                         style: TextStyle(color: Colors.grey),
                       ),
                       SizedBox(
@@ -103,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        leading : Icon(Icons.settings,color: Colors.blue,),
+                        leading : Icon(Icons.settings,color: Colors.indigo[800],),
                         title: Text("Settings",style: TextStyle(fontSize: 16.0),),
                         contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                         onTap: () {},
@@ -113,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.grey,
                       ),
                       ListTile(
-                        leading : Icon(Icons.history,color: Colors.blue,),
+                        leading : Icon(Icons.history,color: Colors.indigo[800],),
                         title: Text("History",style: TextStyle(fontSize: 16.0),),
                         contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                         onTap: () {},
@@ -123,22 +159,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.grey,
                       ),
                       ListTile(
-                        leading : Icon(Icons.help,color: Colors.blue,),
+                        leading : Icon(Icons.help,color: Colors.indigo[800],),
                         title: Text("Help & Support",style: TextStyle(fontSize: 16.0),),
                         contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                         onTap: () {},
-                      ),
-                      Divider(
-                        height: 10.0,
-                        color: Colors.grey,
-                      ),
-                      ListTile(
-                        leading : Icon(Icons.power_settings_new,color: Colors.blue,),
-                        title: Text("Register",style: TextStyle(fontSize: 16.0),),
-                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                        onTap: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterPage()));
-                        },
                       ),
                       Divider(
                         height: 10.0,
@@ -258,32 +282,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               SizedBox(height: 20.0,),
-              Container(
-                height: 40.0,
-                child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.indigoAccent,
-                    color: Colors.indigo,
-                    elevation: 7.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        signOutUser().then((value) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => MyHomePage()),
-                                  (Route<dynamic> route) => false);
-                        });
-                      },
-                      child: Center(
-                        child: Text(
-                          'LOGOUT',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat'
-                          ),
-                        ),
-                      ),
-                    )
+              RaisedButton(
+                onPressed: () {
+                  signOutUser().then((value) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                            (Route<dynamic> route) => false);
+                  });
+                },
+                color: Colors.indigo[800],
+                padding: EdgeInsets.symmetric(horizontal: 150),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 2.2,
+                      color: Colors.white),
                 ),
               ),
               SizedBox(height: 15.0,),
@@ -292,5 +309,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+
   }
 }

@@ -26,7 +26,7 @@ class _SignupPageState extends State<SignupPage> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePagee(),
+              builder: (context) => RegisterPage(),
             ));
       }
     });
@@ -174,11 +174,7 @@ class _SignupPageState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(20.0)),
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyHomePage(),
-                              ));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
                         },
                         child:
 

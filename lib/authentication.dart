@@ -66,16 +66,16 @@ Future<FirebaseUser> signin(
     print(e.code);
     switch (e.code) {
       case 'ERROR_INVALID_EMAIL':
-        showErrDialog(context, e.code);
+        showErrDialog(context, "Invalid Email");
         break;
       case 'ERROR_WRONG_PASSWORD':
-        showErrDialog(context, e.code);
+        showErrDialog(context, "Wrong Password");
         break;
       case 'ERROR_USER_NOT_FOUND':
-        showErrDialog(context, e.code);
+        showErrDialog(context, "User not found");
         break;
       case 'ERROR_USER_DISABLED':
-        showErrDialog(context, e.code);
+        showErrDialog(context, "User Disabled");
         break;
       case 'ERROR_TOO_MANY_REQUESTS':
         showErrDialog(context, e.code);
