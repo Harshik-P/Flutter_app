@@ -71,7 +71,7 @@ class _NotificationPageState extends State<NotificationPage> {
             children: <Widget>[
               ListTile(
                 title: Align(
-                  child: new Text("$doername accepted your $jobname",style: TextStyle(fontSize: 23.0),),
+                  child: new Text("$doername accepted your $jobname job",style: TextStyle(fontSize: 23.0),),
                   alignment: Alignment(-0.8, 0),
                 ),
                 subtitle: Align(
