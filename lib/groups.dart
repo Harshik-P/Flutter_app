@@ -16,6 +16,7 @@ class _NotificationPageState extends State<NotificationPage> {
   String givername;
   String jobname;
   String uid;
+  String doermobnum;
 
   FirebaseUser userData;
 
@@ -48,19 +49,24 @@ class _NotificationPageState extends State<NotificationPage> {
     uid = userData.uid;
 
     yield* Firestore.instance.collection('notifications').where("userID", isEqualTo: uid).orderBy("Datetym", descending: true).snapshots();
-    print(uid);t
   }
 
+  void sendData(DocumentSnapshot notification) {
+    Navigator.pushReplacementNamed(context, '/preview', arguments: {
+      'doername': notification['jobdoername'], 'doermobnum': notification['doermobnum'], 'doeruid': notification['jobdoeruid']
+    }
+    );
+  }
 
   Widget JobCard(BuildContext context, DocumentSnapshot notification) {
 
     doername = notification['jobdoerName'];
+    doermobnum = notification['doermobnum'];
     givername = notification['jobgivername'];
     jobname = notification['jobname'];
     Timestamp date = notification['Datetym'];
     DateTime showDate = date.toDate();
     showDate.toString();
-    print(doername);
 
     return new Container(
       child:  Card(
@@ -70,13 +76,11 @@ class _NotificationPageState extends State<NotificationPage> {
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Align(
+                title: Padding(padding: EdgeInsets.only(top: 10),
                   child: new Text("$doername accepted your $jobname job",style: TextStyle(fontSize: 23.0),),
-                  alignment: Alignment(-0.8, 0),
                 ),
-                subtitle: Align(
-                  child: new Text("$showDate" ,style: TextStyle(fontSize: 16.0),),
-                  alignment: Alignment(-0.8, 0),
+                subtitle: Padding(padding: EdgeInsets.only(top: 10),
+                  child: new Text("$doermobnum" ,style: TextStyle(fontSize: 16.0),),
                 ),
                 contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                 dense: true,
@@ -93,4 +97,5 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
     );
   }
+
 }

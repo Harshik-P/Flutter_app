@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 import 'dart:async';
 import 'dart:io';
 import 'profilepage.dart';
+import 'homepage.dart';
 import 'profilepage.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -22,19 +23,50 @@ class _EditProfilePageState extends State<EditProfilePage> {
   File file;
   String productId = DateTime.now().millisecondsSinceEpoch.toString();
   String uid;
+  String Firstname;
+  String Lastname;
+  String mobnum;
+  String address;
+  String city;
+  String upfullname;
+  String upcity;
+  String upmobile;
+  String upaddress;
 
-  Future<void> getCurrentUid() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  FirebaseUser userData;
+  Future<void> getDetails() async {
+    userData = await FirebaseAuth.instance.currentUser();
+    uid = userData.uid;
+
+    DocumentSnapshot details = await Firestore.instance.collection('userData').document(uid).get();
     setState(() {
-      uid = user.uid;
+      Firstname = details.data['FirstName'];
+      Lastname = details.data['LastName'];
+      mobnum = details.data['Mobile'];
+      address = details.data['Address'];
+      city = details.data['City'];
     });
   }
-
 
   @override
   void initState() {
     super.initState();
-    getCurrentUid();
+    getDetails();
+  }
+
+  void checkData(){
+    if(upaddress == null) {
+      upaddress = address;
+    }
+    if(upmobile == null) {
+      upmobile = mobnum;
+    }
+    if(upfullname == null) {
+      upfullname = Firstname;
+    }
+    if(upcity == null) {
+      upcity = city;
+    }
   }
 
   @override
@@ -74,7 +106,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.indigo[800],
         elevation: 1,
         leading: IconButton(
           icon: Icon(
@@ -82,7 +114,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed('/profile');
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                builder: (context) => HomePagee(),
+            )
+            );
           },
         ),
       ),
@@ -160,62 +197,62 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(),
                     border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
-                    prefixText: 'FULL NAME',
-                    prefixStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    hintText: 'FULL NAME',
+                    hintText: Firstname,
                     hintStyle: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent))),
+                  onChanged: (value) {
+                      setState(() {
+                        upfullname = value;
+                      });
+                    }
               ),
               SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.all(12),
-                child: Text("Email"),
+                child: Text("Mobile Number"),
               ),
               TextField(
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(),
                     border: OutlineInputBorder(),
-                    prefixText: 'E-MAIL ',
-                    prefixStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    hintText: 'E-MAIL ',
+                    hintText: mobnum,
                     hintStyle: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent))),
+                  onChanged: (value) {
+                      setState(() {
+                        upmobile = value;
+                      });
+                    }
               ),
               SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.all(12),
-                child: Text("New Password"),
+                child: Text("City"),
               ),
               TextField(
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(),
                     border: OutlineInputBorder(),
-                    prefixText: 'NEW PASSWORD ',
-                    prefixStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    hintText: 'NEW PASSWORD ',
+                    hintText: city,
                     hintStyle: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent))),
+                  onChanged: (value) {
+                      setState(() {
+                        upcity = value;
+                      });
+                    }
               ),
               SizedBox(height: 10.0),
               Container(
@@ -226,18 +263,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(),
                     border: OutlineInputBorder(),
-                    prefixText: 'LOCATION ',
-                    prefixStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    hintText: 'LOCATION ',
+                    hintText: address,
                     hintStyle: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent))),
+                  onChanged: (value) {
+                      setState(() {
+                        upaddress = value;
+                      });
+                    }
               ),
               SizedBox(
                 height: 35,
@@ -253,7 +290,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
+                            builder: (context) => HomePagee(),
                           ));
                     },
                     child: Text("CANCEL",
@@ -267,13 +304,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       // ignore: unnecessary_statements
                       //uploading ? null : () => uploadImageAndSaveItemInfo();
                       uploadPic();
+
+                      print(upaddress);
+                      checkData();
+
+                      Firestore.instance.collection('userData').document(uid)
+                      .updateData({
+                         'FirstName': upfullname,
+                         'City': upcity,
+                         'Mobile': upmobile,
+                         'Address': upaddress
+                      });
+
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
+                            builder: (context) => HomePagee(),
                           ));
                     },
-                    color: Colors.blue,
+                    color: Colors.indigo[800],
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,
                     shape: RoundedRectangleBorder(
@@ -287,7 +336,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   )
                 ],
-              )
+              ),
+              SizedBox(
+                height: 15,
+              ),
             ],
           ),
         ),

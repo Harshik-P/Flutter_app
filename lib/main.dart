@@ -16,6 +16,7 @@ import 'add.dart';
 import 'groups.dart';
 import 'jobs.dart';
 import 'profilepage.dart';
+import 'preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() => runApp(new MyApp());
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
         '/opening': (BuildContext context) => new OpeningPage(),
         '/editprofile': (BuildContext context) => new EditProfilePage(),
         '/jobs': (BuildContext context) => new Jobs(),
-        '/groups': (BuildContext context) => new NotificationPage()
+        '/groups': (BuildContext context) => new NotificationPage(),
+        '/preview': (BuildContext context) => new Preview()
       },
 
       home: new MyHomePage(),
@@ -59,18 +61,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  String email;
-  String password;
+  String _email;
+  String _password;
 
   GlobalKey<FormState> formkey = GlobalKey <FormState>();
 
   void login() {
-    signin(email, password, context).then((value) {
+    signin(_email, _password, context).then((value) {
       if (value != null) {
+        print("hello");
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePagee(uid: value.uid),
+              builder: (context) => HomePagee(uid: value.uid,),
             ));
       }
     }
@@ -131,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ]),
                     onChanged: (value) {
                       setState(() {
-                        email = value;
+                        _email = value;
                       });
                     }
                   ),
@@ -157,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ]),
                     onChanged: (value) {
                       setState(() {
-                        password = value;
+                        _password = value;
                       });
                     }
                   ),
@@ -178,15 +181,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(height: 40.0,),
                   Container(
-                    height: 40.0,
-                    child: Material(
+                      height: 40.0,
+                      child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.indigoAccent,
-                        color: Colors.indigo[800],
+                        color: Colors.indigo,
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
-                              login();
+                            login();
                           },
                           child: Center(
                             child: Text(
@@ -194,13 +197,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Montserrat'
-                              ),
+                                  fontFamily: 'Montserrat'),
                             ),
                           ),
-                        )
-                    ),
-                  ),
+                        ),
+                      )),
                   SizedBox(height: 23.0,),
                   Container(
                     height: 40.0,
@@ -217,9 +218,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         onTap: () {
                           gooogleSignIn().whenComplete(() async {
                             FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
+                            if(user.uid!=null){
                             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => RegisterPage(uid: user.uid)));
+                                builder: (context) => RegisterPage(uid: user.uid)));}
+                            else{
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                  builder: (context) => MyHomePage()));
+                            }
                           });
                         },
                         child:

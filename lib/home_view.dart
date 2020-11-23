@@ -117,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                 subtitle: Align(
                   child: new Text(job['City'] ,style: TextStyle(fontSize: 16.0),),
-                  alignment: Alignment(-0.8, 0),
+                  alignment: Alignment(-0.8, 0.6),
                 ),
                 contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                 dense: true,

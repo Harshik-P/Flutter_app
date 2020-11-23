@@ -122,22 +122,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                         validator: (val) => val.length == 0 ? "Enter Age" : null,
                       decoration: InputDecoration(
-                          labelText: 'ADDRESS ',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.indigo[800]))),
-                        onChanged: (value) {
-                          setState(() {
-                            addr = value;
-                          });
-                        }
-                    ),
-                    TextFormField(
-                        validator: (val) => val.length == 0 ? "Enter Age" : null,
-                      decoration: InputDecoration(
                           labelText: 'CITY ',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
@@ -148,6 +132,22 @@ class _RegisterPageState extends State<RegisterPage> {
                         onChanged: (value) {
                           setState(() {
                             city = value;
+                          });
+                        }
+                    ),
+                    TextFormField(
+                        validator: (val) => val.length == 0 ? "Enter Age" : null,
+                        decoration: InputDecoration(
+                            labelText: 'ADDRESS ',
+                            labelStyle: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.indigo[800]))),
+                        onChanged: (value) {
+                          setState(() {
+                            addr = value;
                           });
                         }
                     ),
@@ -167,34 +167,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             age = value;
                           });
                         }
-                    ),
-                    TextFormField(
-                        validator: (val) => val.length == 0 ? "Enter Age" : null,
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                          prefixIcon: IconButton(
-                              icon: Icon(Icons.date_range),
-                              onPressed: () {
-                                showDatePicker(
-                                    context: context,
-                                    initialDate: choosedate,
-                                    firstDate: DateTime(DateTime.now().year-50),
-                                    lastDate: DateTime(DateTime.now().year+2)
-                                ).then((date) {
-                                  setState(() {
-                                    choosedate = date;
-                                  });
-                                });
-                              }
-                          ),
-                          labelText: 'DATE OF BIRTH ',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.indigo[800]))),
-
                     ),
                     SizedBox(height: 50.0),
                     Container(

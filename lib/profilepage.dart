@@ -150,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       ListTile(
                         leading : Icon(Icons.history,color: Colors.indigo[800],),
-                        title: Text("History",style: TextStyle(fontSize: 16.0),),
+                        title: Text("My Bookings",style: TextStyle(fontSize: 16.0),),
                         contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                         onTap: () {},
                       ),
@@ -270,39 +270,38 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30.0,
                           color: Colors.grey,
                         ),
-                        Text("Currency", style: TextStyle(fontSize: 16.0)),
-                        // SizedBox(height: 10.0,),
-                        Divider(
-                          height: 30.0,
-                          color: Colors.grey,
-                        ),
                       ],
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 20.0,),
-              RaisedButton(
-                onPressed: () {
-                  signOutUser().then((value) {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => MyHomePage()),
-                            (Route<dynamic> route) => false);
-                  });
-                },
-                color: Colors.indigo[800],
-                padding: EdgeInsets.symmetric(horizontal: 150),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  "Logout",
-                  style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
-                      color: Colors.white),
-                ),
-              ),
+              Container(
+                  height: 40.0,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(20.0),
+                    shadowColor: Colors.indigoAccent,
+                    color: Colors.indigo,
+                    elevation: 7.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        signOutUser().then((value) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => MyHomePage()),
+                                  (Route<dynamic> route) => false);
+                        });
+                      },
+                      child: Center(
+                        child: Text(
+                          'LOGOUT',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Montserrat'),
+                        ),
+                      ),
+                    ),
+                  )),
               SizedBox(height: 15.0,),
             ],
           ),

@@ -53,10 +53,10 @@ Future<bool> gooogleSignIn() async {
 // instead of returning true or false
 // returning user to directly access UserID
 Future<FirebaseUser> signin(
-    String email, String password, BuildContext context) async {
+    String _email, String _password, BuildContext context) async {
   try {
     AuthResult result =
-    await auth.signInWithEmailAndPassword(email: email, password: email);
+    await auth.signInWithEmailAndPassword(email: _email, password: _password);
     FirebaseUser user = result.user;
 
     // return Future.value(true);
@@ -97,7 +97,7 @@ Future<FirebaseUser> signUp(
     String email, String password, BuildContext context) async {
   try {
     AuthResult result = await auth.createUserWithEmailAndPassword(
-        email: email, password: email);
+        email: email, password: password);
     FirebaseUser user = result.user;
     return Future.value(user);
     // return Future.value(true);

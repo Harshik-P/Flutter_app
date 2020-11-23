@@ -53,7 +53,7 @@ class _HomePageeState extends State<HomePagee> {
               backgroundColor: Colors.indigo[800],
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.group),
+              icon: new Icon(Icons.notifications),
               title: new Text("Notifications"),
               backgroundColor: Colors.indigo[800],
             ),

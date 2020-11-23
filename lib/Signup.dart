@@ -138,16 +138,16 @@ class _SignupPageState extends State<SignupPage> {
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.indigoAccent,
-                        color: Colors.indigo[800],
+                        color: Colors.indigo,
                         elevation: 7.0,
                         child: GestureDetector(
                           onTap: () {
                             if(password == confirmpassword) {
                               handleSignup();
                             } else {
-                                  showErrDialog(context, 'Password not matched');
-                              }
-                            },
+                              showErrDialog(context, 'Password not matched');
+                            }
+                          },
                           child: Center(
                             child: Text(
                               'SIGNUP',
@@ -158,35 +158,31 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ),
                         ),
-                        ),
-                      ),
+                      )),
                   SizedBox(height: 20.0),
                   Container(
-                    height: 40.0,
-                    color: Colors.transparent,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.black,
-                              style: BorderStyle.solid,
-                              width: 1.0),
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(20.0)),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
-                        },
-                        child:
-
-                        Center(
-                          child: Text('Go Back',
+                      height: 40.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shadowColor: Colors.indigoAccent,
+                        color: Colors.indigo,
+                        elevation: 7.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                          },
+                          child: Center(
+                            child: Text(
+                              'GO BACK',
                               style: TextStyle(
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Montserrat')),
+                                  fontFamily: 'Montserrat'),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )),
+                  SizedBox(height: 15.0,),
                 ],
               )),
           // SizedBox(height: 15.0),

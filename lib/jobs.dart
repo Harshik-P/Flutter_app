@@ -27,6 +27,7 @@ class _JobsState extends State<Jobs> {
   String giveruid;
   String givername;
   String jobname;
+  String doermobnum;
 
   FirebaseUser userData;
   Future<void> onPressed() async {
@@ -35,6 +36,7 @@ class _JobsState extends State<Jobs> {
     DocumentSnapshot variable = await Firestore.instance.collection('userData').document(uid).get();
     setState(() {
       doername = variable.data['FirstName'];
+      doeruid = uid;
     });
     print(doername);
   }
@@ -48,7 +50,6 @@ class _JobsState extends State<Jobs> {
   final database = Firestore.instance;
 
   String docID;
-  String emp_uid;
 
   Map jobData = {};
 
@@ -325,9 +326,11 @@ class _JobsState extends State<Jobs> {
                              giveruid = jobData['uid'];
                              givername = jobData['Full Name'];
                              jobname = jobData['Job'];
+                             doermobnum = jobData['Mobile'];
                              Firestore.instance.collection("notifications").
-                             add({'jobdoerName': doername, 'jobgiverName': this.givername,
-                               'jobgiverUID': this.giveruid, 'jobname': this.jobname, 'userID': this.giveruid, 'Datetym': tym , 'count':FieldValue.increment(1)});
+                             add({'jobdoerName': doername, 'jobdoeruid': doeruid, 'jobgiverName': this.givername,
+                               'jobgiverUID': this.giveruid, 'jobname': this.jobname, 'userID': this.giveruid,
+                               'doermobnum': this.doermobnum, 'Datetym': tym});
                            },
                           child: Center(
                            child: Text(
